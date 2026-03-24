@@ -2,32 +2,34 @@ function normalizeShift(shiftValue) {
     return ((shiftValue % 26) + 26) % 26
 }
 
+function shiftChar(char, normalizedShiftValue) {
+
+    const isUppercase = char === char.toUpperCase();
+    const baseCode = isUppercase ? "A".charCodeAt(0) : "a".charCodeAt(0)
+    const charPosition = char.charCodeAt(0) - baseCode; 
+    const newCode = (charPosition + normalizedShiftValue + 26) % 26;
+    const newChar = String.fromCharCode(baseCode + newCode)
+    return newChar
+}
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const shiftValue = 3
 
 function encrypt(message, shiftValue) {
+    console.log('Encrypting...')
     const normalizedShiftValue = normalizeShift(shiftValue)
-    console.log ("Normalized Shift " + normalizedShiftValue);
+    // console.log ("Normalized Shift " + normalizedShiftValue);
     let encryptMess = "";
     let counter = 0
     for (let i = 0; i < message.length; i++ ) {
         const char = message[i];
         if(char.toLowerCase() !== char.toUpperCase()) {
-            // Making sure that the letters turn equal to each other
-            const isUppercase = char === char.toUpperCase();
-            const baseCode = isUppercase ? "A".charCodeAt(0) : "a".charCodeAt(0)
-            const charPosition = char.charCodeAt(0) - baseCode; 
-            console.log(`
-            Input Character is ${char} - Basecode is: ${baseCode} ASCII Char Code is ${char.charCodeAt(0)} and its position in the alphabet is ${charPosition}.`
-            );
-            const newCode = (charPosition + normalizedShiftValue + 26) % 26;
-            console.log (`New Char is: ${String.fromCharCode(baseCode + newCode)}`)
-            const encrypted = String.fromCharCode(baseCode + newCode)
-            encryptMess += encrypted;
+         
+            const newChar = shiftChar(char, normalizedShiftValue)
+            encryptMess += newChar;
         }
         else {
-            console.log ('Non alphabet character, adding on ' + char);
+            // console.log ('Non alphabet character, adding on ' + char);
             encryptMess += char
         };
         counter++;
@@ -42,7 +44,45 @@ function encrypt(message, shiftValue) {
     }
     return encryptMess; 
 }
-console.log(encrypt('xy!z@', 3));
+
+function decrypt (encryptMess, shiftValue) {
+    const normalizedShiftValue = normalizeShift(-shiftValue);
+    console.log('Decrypting...')
+
+    let decryptMess = "";
+    let counter = 0;
+
+    for (let i = 0; i < encryptMess.length; i++){
+        const char = encryptMess[i];
+        // Skip third character random addition
+        if (counter === 2 ) {
+            counter = 0;
+            continue;
+        }
+
+        if (char.toLowerCase() !== char.toUpperCase()) {
+
+            const decryptedChar = shiftChar(char, normalizedShiftValue);
+            console.log ("Decrypted Val: " + decryptedChar);
+            decryptMess += decryptedChar;
+
+        }
+        else {
+            decryptMess += char; 
+        }
+        counter++;
+    }
+
+    return decryptMess
+}
+
+
+
+
+
+console.log(encrypt('ABC', 3));
+const encryptedVal = encrypt('ABC', 3)
+console.log(decrypt(encryptedVal, 3));
 
 // Made a function for encryption
 
