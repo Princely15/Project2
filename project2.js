@@ -1,7 +1,14 @@
+function normalizeShift(shiftValue) {
+    return ((shiftValue % 26) + 26) % 26
+}
+
+
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const shiftValue = 3
 
 function encrypt(message, shiftValue) {
+    const normalizedShiftValue = normalizeShift(shiftValue)
+    console.log ("Normalized Shift " + normalizedShiftValue);
     let encryptMess = "";
     let counter = 0
     for (let i = 0; i < message.length; i++ ) {
@@ -14,7 +21,7 @@ function encrypt(message, shiftValue) {
             console.log(`
             Input Character is ${char} - Basecode is: ${baseCode} ASCII Char Code is ${char.charCodeAt(0)} and its position in the alphabet is ${charPosition}.`
             );
-            const newCode = (charPosition + shiftValue + 26) % 26;
+            const newCode = (charPosition + normalizedShiftValue + 26) % 26;
             console.log (`New Char is: ${String.fromCharCode(baseCode + newCode)}`)
             const encrypted = String.fromCharCode(baseCode + newCode)
             encryptMess += encrypted;
@@ -38,3 +45,4 @@ function encrypt(message, shiftValue) {
 console.log(encrypt('xy!z@', 3));
 
 // Made a function for encryption
+
