@@ -1,7 +1,9 @@
+
+// Keeps loop within the alphabet const
 function normalizeShift(shiftValue) {
     return ((shiftValue % 26) + 26) % 26
 }
-
+// Recognizes upper case and lowercase for translation
 function shiftChar(char, normalizedShiftValue) {
 
     const isUppercase = char === char.toUpperCase();
@@ -15,6 +17,8 @@ function shiftChar(char, normalizedShiftValue) {
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const shiftValue = 3
 
+
+//fully encrypts the code inputted
 function encrypt(message, shiftValue) {
     console.log('Encrypting...')
     const normalizedShiftValue = normalizeShift(shiftValue)
@@ -23,6 +27,8 @@ function encrypt(message, shiftValue) {
     let counter = 0
     for (let i = 0; i < message.length; i++ ) {
         const char = message[i];
+
+
         if(char.toLowerCase() !== char.toUpperCase()) {
          
             const newChar = shiftChar(char, normalizedShiftValue)
@@ -45,6 +51,8 @@ function encrypt(message, shiftValue) {
     return encryptMess; 
 }
 
+
+// fully decrypts the message inputted
 function decrypt (encryptMess, shiftValue) {
     const normalizedShiftValue = normalizeShift(-shiftValue);
     console.log('Decrypting...')
